@@ -7,7 +7,7 @@ import Tracklist from './components/Tracklist';
 
 import { useState } from 'react';
 
-const tacks = [
+const tracks = [
   {
     id: "1",
     name: "name 1",
@@ -43,18 +43,24 @@ const tacks = [
 function App() {
 
 
-  const [list, setList] = useState(tacks);
+  const [list, setList] = useState([]);
+
   const [playlist, setPlaylist] = useState([]);
+
+  const search = () => {
+    //  get songs
+    setList(tracks);
+  }
 
 
 
   return (
     <div className="app">
       <Header />
-      <SearchBar />
+      <SearchBar search={search} />
       <div className='container'>
         <SeachResults className="search-results" results={list} />
-        <Tracklist className="track-list" songs={playlist}/>
+        <Tracklist className="track-list" songs={playlist} />
       </div>
     </div>
   );

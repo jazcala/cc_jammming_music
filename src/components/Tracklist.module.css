@@ -9,23 +9,24 @@
   padding: 1rem;
 
 }
-.tracklist input {
+.tracklist .playlistName {
+  border:none;
+  border-bottom: 0.05rem solid darkslategray;
   width: 100%;
 }
 .Button {
-
+  border-radius: 1rem;
   background-color: black;
   color: white;
   padding: 0.5rem 1rem;
-  width: 80%;
+  width: 50%;
   display: inline-block;
-
+  margin: 0.5rem 0;
 }
 
 @media only screen and (min-width: 481px){
   .tracklist {
   width: 50%;
-
   }
 
 }
