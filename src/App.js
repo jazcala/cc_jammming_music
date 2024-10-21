@@ -52,7 +52,13 @@ function App() {
   }
 
   const addPlaylist = (track) => {
-    setPlaylist((prev) => [...prev, track]);
+    let result = playlist.find(elem => elem.id === track.id);
+    if (!result) {
+      setPlaylist((prev) => [...prev, track]);
+    } else {
+      alert('This song is in the playlist.')
+    }
+
   };
 
   const removeFromPlaylist = (trackToRemove) => {
