@@ -1,4 +1,22 @@
-.App {
+.app {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.app .container {
+
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+}
+
+
+
+/* .App {
   text-align: center;
 }
 
@@ -35,4 +53,12 @@
   to {
     transform: rotate(360deg);
   }
+} */
+
+@media only screen and (min-width: 481px) {
+.app .container {
+  flex-direction:row;
+  justify-content: space-between;
+
+}
 }
