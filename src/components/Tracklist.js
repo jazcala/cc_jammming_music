@@ -25,6 +25,6 @@ function Tracklist(props) {
     </div>
 
   )
-};
+}
 
 export default Tracklist;
