@@ -8,6 +8,7 @@ function Track(props) {
     const addRemoveTrack = props.addRemoveTrack;
 
     const handleClick = (e) => {
+        e.preventDefault();
         if (addRemoveTrack) {
             props.addPlaylist(track);
         } else {
