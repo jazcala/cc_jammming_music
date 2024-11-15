@@ -3,27 +3,38 @@ import Track from './Track';
 import styles from './Tracklist.module.css';
 
 
-function Tracklist(props) {
-  const results = props.songs;
+function Tracklist({ songsPlaylist, removeFromPlaylist, savePlaylist }) {
+  const [title, setTitle] = useState("");
+  const [trackUris, setTracksUri] = useState([]);
+
+
   const addRemoveTrack = false;
-  const removeFromPlaylist = props.removeFromPlaylist;
-  const [name, setName] = useState("");
-  const handleName = (e) => setName(e.target.value);
+  const handleTitle = (e) => setTitle(e.target.value);
 
-
+  const handleSubmitSavePlaylist = (e) => {
+    e.preventDefault();
+    if (title === '') {
+      return alert('Add a playlist title');
+    }
+    if (songsPlaylist.length == 0) {
+      return alert('Add at least a track to the playlist');
+    }
+    setTracksUri(Array.from(songsPlaylist, song => song.uri));
+    savePlaylist(title, trackUris);
+  }
 
   return (
-    <div className={styles.tracklist}>
+    <form className={styles.tracklist} onSubmit={handleSubmitSavePlaylist} id="playlist-section">
       <input
         className={styles.playlistName}
-        onChange={handleName} value={name} type="text" placeholder="Add a playlist title" />
+        id="playlist-title"
+        onChange={handleTitle} value={title} type="text" placeholder="Add a playlist title" />
       {
-        results.map((result) => (
-          <Track key={result.id} addRemoveTrack={addRemoveTrack} track={result} removeFromPlaylist={removeFromPlaylist} />
+        songsPlaylist.map((song) => (
+          <Track key={song.id} addRemoveTrack={addRemoveTrack} track={song} removeFromPlaylist={removeFromPlaylist} />
         ))}
-      <button className={styles.Button}>Save to Spotify</button>
-    </div>
-
+      <button id="save-spotify-btn" className={styles.Button} type="Submit">Save to Spotify</button>
+    </form>
   )
 }
 

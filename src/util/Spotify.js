@@ -3,7 +3,9 @@ const redirectUri = 'http://localhost:3003/'; // Have to add this to your accept
 let accessToken;
 
 const Spotify = {
+
   getAccessToken() {
+    console.log('Spotify - Getting access Token')
     if (accessToken) {
       return accessToken;
     }
@@ -24,6 +26,7 @@ const Spotify = {
   },
 
   async search(term) {
+    console.log("Spotify - Search")
     const accessToken = Spotify.getAccessToken();
     return await fetch(`https://api.spotify.com/v1/search?type=track&q=${term}`, {
       headers: {
@@ -46,6 +49,7 @@ const Spotify = {
   },
 
   async savePlaylist(name, trackUris) {
+    console.log("Spotify - savePlaylist")
     if (!name || !trackUris.length) {
       return;
     }
@@ -56,9 +60,9 @@ const Spotify = {
 
     return await fetch('https://api.spotify.com/v1/me', { headers: headers }
     ).then(response => response.json()
-    ).then(jsonResponse => {
+    ).then(async jsonResponse => {
       userId = jsonResponse.id;
-      return fetch(`https://api.spotify.com/v1/users/${userId}/playlists`, {
+      return await fetch(`https://api.spotify.com/v1/users/${userId}/playlists`, {
         headers: headers,
         method: 'POST',
         body: JSON.stringify({ name: name })

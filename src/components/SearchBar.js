@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styles from './SearchBar.module.css';
 
-function SearchBar(props) {
+function SearchBar({ search }) {
   const [searchValue, setSearchValue] = useState("");
 
   const onChangeSearchValue = ({ target }) => {
@@ -13,9 +13,9 @@ function SearchBar(props) {
     if (searchValue === "") {
       return alert('Please enter a song title');
     }
-    props.search(searchValue);
-
+    search(searchValue);
   }
+
   return (
     <form className={styles.searchBar} onSubmit={handleSearchSubmit}>
       <input
