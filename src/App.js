@@ -8,54 +8,31 @@ import Spotify from "./util/Spotify";
 
 import { useState, useCallback } from 'react';
 
-// const tracks = [
-//   {
-//     id: "1",
-//     name: "name 1",
-//     artist: "artist 1",
-//     album: "album 1.1",
-//   },
-//   {
-//     id: "2",
-//     name: "name 2",
-//     artist: "artist 2",
-//     album: "album 2",
-//   },
-//   {
-//     id: "3",
-//     name: "name 3",
-//     artist: "artist 3",
-//     album: "album 3",
-//   },
-//   {
-//     id: "4",
-//     name: "name 4",
-//     artist: "artist 4",
-//     album: "album 4",
-//   },
-//   {
-//     id: "5",
-//     name: "name 5",
-//     artist: "artist 5",
-//     album: "album 5",
-//   }
-// ]
-
 function App() {
 
-
-  const [list, setList] = useState([]);
+  const [searchResults, setSearchResults] = useState([]);
+  // const [playlistTitle, setPlaylistTitle] = useState('');
   const [playlist, setPlaylist] = useState([]);
 
-  // const search = () => {
-  //   //  get songs
-  //   setList(tracks);
-
-  // }
-
+  // Spotify Calls
   const search = useCallback((term) => {
-    Spotify.search(term).then(setList);
+    Spotify.search(term).then(setSearchResults);
   }, []);
+
+  const savePlaylist = useCallback((title, trackUris) => {
+
+    try {
+      Spotify.savePlaylist(title, trackUris).then(clearPlaylist);
+    } catch (e) {
+      console.log('savePlaylist Error catched: ', e)
+    }
+  }, []);
+
+  // Other functions
+  const clearPlaylist = () => {
+    // setPlaylistTitle("");
+    setPlaylist([]);
+  }
 
   const addPlaylist = (track) => {
     let result = playlist.find(elem => elem.id === track.id);
@@ -76,8 +53,11 @@ function App() {
       <Header />
       <SearchBar search={search} />
       <div className='container'>
-        <SeachResults className="search-results" results={list} addPlaylist={addPlaylist} />
-        <Tracklist className="track-list" songs={playlist} removeFromPlaylist={removeFromPlaylist} />
+        <SeachResults className="search-results" results={searchResults} addPlaylist={addPlaylist} />
+        <Tracklist className="track-list"
+          songsPlaylist={playlist}
+          removeFromPlaylist={removeFromPlaylist}
+          savePlaylist={savePlaylist} />
       </div>
     </div>
   );
