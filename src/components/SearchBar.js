@@ -4,11 +4,12 @@ import styles from './SearchBar.module.css';
 function SearchBar({ search }) {
   const [searchValue, setSearchValue] = useState("");
 
-  const onChangeSearchValue = ({ target }) => {
-    setSearchValue(target.value)
+  const onChangeSearchValue = (e) => {
+    e.preventDefault();
+    setSearchValue(e.target.value);
   }
 
-  const handleSearchSubmit = (e) => {
+  const handleSearchClick = (e) => {
     e.preventDefault();
     if (searchValue === "") {
       return alert('Please enter a song title');
@@ -17,14 +18,16 @@ function SearchBar({ search }) {
   }
 
   return (
-    <form className={styles.searchBar} onSubmit={handleSearchSubmit}>
+    <div className={styles.searchBar} >
       <input
         type="text"
         name="search"
         placeholder="Enter a song title"
         onChange={onChangeSearchValue} />
-      <button className={styles.searchBtn} type='submit'>Search</button>
-    </form>
+      <button className={styles.searchBtn}
+        type='button'
+        onClick={handleSearchClick}>Search</button>
+    </div>
   );
 }
 

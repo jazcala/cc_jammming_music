@@ -9,7 +9,10 @@ function Tracklist({ songsPlaylist, removeFromPlaylist, savePlaylist }) {
 
 
   const addRemoveTrack = false;
-  const handleTitle = (e) => setTitle(e.target.value);
+  const handleTitle = (e) => {
+    e.preventDefault();
+    setTitle(e.target.value)
+  };
 
   const handleSubmitSavePlaylist = (e) => {
     e.preventDefault();
