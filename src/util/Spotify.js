@@ -4,78 +4,136 @@ let accessToken;
 
 const Spotify = {
 
-  getAccessToken() {
-    console.log('Spotify - Getting access Token')
-    if (accessToken) {
-      return accessToken;
+  async loadSpotifyLoginPage() {
+    const accessUrl = `https://accounts.spotify.com/authorize?client_id=${clientId}&response_type=token&scope=playlist-modify-public&redirect_uri=${redirectUri}`;
+    console.log('access url: ', accessUrl);
+    // This loads the accessUrl in the windows / so the user can add its credentials.
+    window.location = accessUrl;
+    // user needs to login and it's redirect to the app to redirectUri
+  },
+
+
+  async getAccessToken() {
+
+    try {
+      console.log('Spotify - Getting access Token ')
+      if (accessToken) {
+        console.log(`Returning existing accessToken`)
+        return accessToken;
+      }
+
+      const accessTokenMatch = window.location.href.match(/access_token=([^&]*)/);
+      const expiresInMatch = window.location.href.match(/expires_in=([^&]*)/);
+
+      if (!(accessTokenMatch && expiresInMatch)) {
+        let login = await this.loadSpotifyLoginPage();
+        console.log('login variable: ', login);
+      }
+
+      if (accessTokenMatch && expiresInMatch) {
+        accessToken = accessTokenMatch[1];
+        const expiresIn = Number(expiresInMatch[1]);
+        window.setTimeout(() => accessToken = '', expiresIn * 1000);
+        window.history.pushState('Access Token', null, '/'); // This clears the parameters, allowing us to grab a new access token when it expires.
+        return accessToken;
+      }
+
+    } catch (error) {
+      console.log(error);
     }
 
-    const accessTokenMatch = window.location.href.match(/access_token=([^&]*)/);
-    const expiresInMatch = window.location.href.match(/expires_in=([^&]*)/);
-    if (accessTokenMatch && expiresInMatch) {
-      accessToken = accessTokenMatch[1];
-      const expiresIn = Number(expiresInMatch[1]);
-      window.setTimeout(() => accessToken = '', expiresIn * 1000);
-      window.history.pushState('Access Token', null, '/'); // This clears the parameters, allowing us to grab a new access token when it expires.
-      return accessToken;
-    } else {
-      console.log('client_id', clientId);
-      const accessUrl = `https://accounts.spotify.com/authorize?client_id=${clientId}&response_type=token&scope=playlist-modify-public&redirect_uri=${redirectUri}`;
-      window.location = accessUrl;
-    }
   },
 
   async search(term) {
-    console.log("Spotify - Search")
-    const accessToken = Spotify.getAccessToken();
+    // const getResponse = async (term) => {
+    console.log(`Spotify - Search by ${term} `);
+
+    if (!term) {
+      return;
+    }
+    const accessToken = await this.getAccessToken();
+
+    console.log('accessToken  insearch', accessToken);
+
     return await fetch(`https://api.spotify.com/v1/search?type=track&q=${term}`, {
       headers: {
         Authorization: `Bearer ${accessToken}`
       }
-    }).then(response => {
-      return response.json();
-    }).then(jsonResponse => {
-      if (!jsonResponse.tracks) {
-        return [];
-      }
-      return jsonResponse.tracks.items.map(track => ({
-        id: track.id,
-        name: track.name,
-        artist: track.artists[0].name,
-        album: track.album.name,
-        uri: track.uri
-      }));
-    });
+    })
+      .then(response => {
+        console.log(`In response fetch search ${term}`);
+        if (response.ok) {
+          return response.json();
+        }
+        throw new Error(`Request failed - search by  ${term}`);
+      })
+      .then(jsonResponse => {
+        console.log(`In jsonResponse fetch search ${term}`);
+
+        if (!jsonResponse.tracks) {
+          console.log(`no tracks found`)
+          return [];
+        }
+        return jsonResponse.tracks.items.map(track => ({
+          id: track.id,
+          name: track.name,
+          artist: track.artists[0].name,
+          album: track.album.name,
+          uri: track.uri
+        }));
+      })
   },
 
   async savePlaylist(name, trackUris) {
-    console.log("Spotify - savePlaylist")
+    console.log(`Spotify - savePlaylist ${name}`)
     if (!name || !trackUris.length) {
+      console.log(`Missing name ${name} or  tracks ${trackUris}`);
       return;
     }
-
-    const accessToken = Spotify.getAccessToken();
+    const accessToken = await this.getAccessToken();
+    console.log('Save playlist get access token', accessToken);
     const headers = { Authorization: `Bearer ${accessToken}` };
     let userId;
 
-    return await fetch('https://api.spotify.com/v1/me', { headers: headers }
-    ).then(response => response.json()
-    ).then(async jsonResponse => {
-      userId = jsonResponse.id;
-      return await fetch(`https://api.spotify.com/v1/users/${userId}/playlists`, {
-        headers: headers,
-        method: 'POST',
-        body: JSON.stringify({ name: name })
-      }).then(response => response.json()
-      ).then(jsonResponse => {
-        const playlistId = jsonResponse.id;
-        return fetch(`https://api.spotify.com/v1/users/${userId}/playlists/${playlistId}/tracks`, {
+    return await fetch('https://api.spotify.com/v1/me', { headers: headers, cache: 'no-cache' }
+    )
+      .then(response => {
+        if (response.ok) {
+          return response.json()
+        }
+        throw new Error(`Request failed - save playlist ${name}`);
+      })
+      .then(async jsonResponse => {
+        console.log(`In jsonResponse ${name}`)
+        userId = jsonResponse.id;
+        return await fetch(`https://api.spotify.com/v1/users/${userId}/playlists`, {
           headers: headers,
           method: 'POST',
-          body: JSON.stringify({ uris: trackUris })
-        });
+          body: JSON.stringify({ name: name })
+        })
+          .then(response => {
+            console.log(`in response save playlit ${name}`)
+            if (response.ok) {
+              return response.json()
+            }
+            throw new Error(`Request failed - post playlist ${userId}`);
+
+          })
+          .then(async jsonResponse => {
+            const playlistId = jsonResponse.id;
+            return await fetch(`https://api.spotify.com/v1/users/${userId}/playlists/${playlistId}/tracks`, {
+              headers: headers,
+              method: 'POST',
+              body: JSON.stringify({ uris: trackUris })
+            })
+              .then(response => {
+                if (response.ok) {
+                  return response.json();
+                }
+                throw new Error(`Request failed - post playlist/ tracks ${userId}`);
+              });
+          })
       });
-    });
   }
 };
 
