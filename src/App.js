@@ -11,8 +11,9 @@ import { useState, useCallback } from 'react';
 function App() {
 
   const [searchResults, setSearchResults] = useState([]);
-  // const [playlistTitle, setPlaylistTitle] = useState('');
-  const [playlist, setPlaylist] = useState([]);
+  const [playlistName, setPlaylistName] = useState('');
+  const [playlistTracks, setPlaylistTracks] = useState([]);
+  const [message, setMessage] = useState("");
 
   // Spotify Calls
   const search = useCallback((term) => {
@@ -27,7 +28,7 @@ function App() {
       console.log('response save playlist', response)
       if (response === 201) {
         clearPlaylist()
-        addCreatedPlaylistMessage()
+        addMessage()
       }
 
     } catch (e) {
@@ -37,26 +38,18 @@ function App() {
 
   // Other functions
   const clearPlaylist = () => {
-    // setPlaylistTitle("");
-
-    console.log('In Clean Playlist');
-    setPlaylist([]);
-    // TODO clean title
+    setPlaylistName('');
+    setPlaylistTracks([]);
   }
 
-  const addCreatedPlaylistMessage = () => {
-    const playlist = document.getElementById('playlistContent');
-    playlist.style.display = 'none';
-    const message = document.createElement('p');
-    const text = document.createTextNode('Playlist created');
-    message.appendChild(text);
-    playlist.parentElement.appendChild(message);
+  const addMessage = (msg = "Playlist created") => {
+    setMessage(msg);
   }
 
   const addPlaylist = (track) => {
-    let result = playlist.find(elem => elem.id === track.id);
+    let result = playlistTracks.find(elem => elem.id === track.id);
     if (!result) {
-      setPlaylist((prev) => [...prev, track]);
+      setPlaylistTracks((prev) => [...prev, track]);
     } else {
       alert('This song is in the playlist.')
     }
@@ -64,7 +57,7 @@ function App() {
   };
 
   const removeFromPlaylist = (trackToRemove) => {
-    setPlaylist((prevTracks) => prevTracks.filter((track) => track.id !== trackToRemove.id));
+    setPlaylistTracks((prevTracks) => prevTracks.filter((track) => track.id !== trackToRemove.id));
   }
 
   return (
@@ -74,9 +67,14 @@ function App() {
       <div className='container'>
         <SeachResults className="search-results" results={searchResults} addPlaylist={addPlaylist} />
         <Playlist className="track-list"
-          songsPlaylist={playlist}
+          playlistTracks={playlistTracks}
+          setPlaylistName={setPlaylistName}
+          playlistName={playlistName}
           removeFromPlaylist={removeFromPlaylist}
-          savePlaylist={savePlaylist} />
+          savePlaylist={savePlaylist}
+          addMessage={addMessage}
+          message={message}
+        />
       </div>
     </div>
   );
