@@ -1,12 +1,12 @@
 import React from 'react';
 import Track from './Track';
 
-function Tracklist({ songsPlaylist, removeFromPlaylist, addRemoveTrack }) {
+function Tracklist({ playlistTracks, removeFromPlaylist, addRemoveTrack }) {
 
   return (
     <>
       {
-        songsPlaylist.map((song) => (
+        playlistTracks.map((song) => (
           <Track key={song.id} addRemoveTrack={addRemoveTrack} track={song} removeFromPlaylist={removeFromPlaylist} />
         ))
       }

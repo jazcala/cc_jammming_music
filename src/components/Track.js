@@ -14,13 +14,15 @@ function Track({ track, addRemoveTrack, addPlaylist, removeFromPlaylist }) {
     }
   }
 
-  return (<div className={styles.Track}>
-    <div >
-      <h3>{track.name}</h3>
-      <p>{track.artist}</p>
+  return (
+    <div className={styles.Track}>
+      <div>
+        <h3>{track.name}</h3>
+        <p>{track.artist}</p>
+      </div>
+      <button onClick={handleClick}>{addRemoveTrack ? '+' : '-'}</button>
     </div>
-    <button onClick={handleClick}>{addRemoveTrack ? '+' : '-'}</button>
-  </div>)
+  )
 }
 
 export default Track;
