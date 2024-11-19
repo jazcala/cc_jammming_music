@@ -127,6 +127,7 @@ const Spotify = {
               body: JSON.stringify({ uris: trackUris })
             })
               .then(response => {
+                console.log(response)
                 if (response.ok) {
                   return response.json();
                 }
