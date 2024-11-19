@@ -3,7 +3,7 @@ import './App.css';
 import Header from './components/Header';
 import SearchBar from './components/SearchBar';
 import SeachResults from './components/SearchResults';
-import Tracklist from './components/Tracklist';
+import Playlist from './components/Playlist';
 import Spotify from "./util/Spotify";
 
 import { useState, useCallback } from 'react';
@@ -19,20 +19,24 @@ function App() {
     Spotify.search(term).then(setSearchResults);
   }, []);
 
-  const savePlaylist = useCallback((title, trackUris) => {
+  const savePlaylist = useCallback(async (title, trackUris) => {
 
     try {
-      Spotify.savePlaylist(title, trackUris).then(clearPlaylist);
+      // console.log("trackUris ", trackUris);
+      const response = await Spotify.savePlaylist(title, trackUris);
+      console.log('response save playlist', response)
+
     } catch (e) {
       console.log('savePlaylist Error catched: ', e)
     }
   }, []);
 
   // Other functions
-  const clearPlaylist = () => {
-    // setPlaylistTitle("");
-    setPlaylist([]);
-  }
+  // const clearPlaylist = () => {
+  //   // setPlaylistTitle("");
+  //   console.log('In Clean Playlist')
+  //   setPlaylist([]);
+  // }
 
   const addPlaylist = (track) => {
     let result = playlist.find(elem => elem.id === track.id);
@@ -54,7 +58,7 @@ function App() {
       <SearchBar search={search} />
       <div className='container'>
         <SeachResults className="search-results" results={searchResults} addPlaylist={addPlaylist} />
-        <Tracklist className="track-list"
+        <Playlist className="track-list"
           songsPlaylist={playlist}
           removeFromPlaylist={removeFromPlaylist}
           savePlaylist={savePlaylist} />
