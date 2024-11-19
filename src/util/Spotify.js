@@ -91,7 +91,7 @@ const Spotify = {
       return;
     }
     const accessToken = await this.getAccessToken();
-    console.log('Save playlist get access token', accessToken);
+    // console.log('Save playlist get access token', accessToken);
     const headers = { Authorization: `Bearer ${accessToken}` };
     let userId;
 
@@ -104,7 +104,7 @@ const Spotify = {
         throw new Error(`Request failed - save playlist ${name}`);
       })
       .then(async jsonResponse => {
-        console.log(`In jsonResponse ${name}`)
+        // console.log(`In jsonResponse ${name}`)
         userId = jsonResponse.id;
         return await fetch(`https://api.spotify.com/v1/users/${userId}/playlists`, {
           headers: headers,
@@ -112,7 +112,7 @@ const Spotify = {
           body: JSON.stringify({ name: name })
         })
           .then(response => {
-            console.log(`in response save playlit ${name}`)
+            // console.log(`in response save playlit ${name}`)
             if (response.ok) {
               return response.json()
             }
@@ -127,9 +127,9 @@ const Spotify = {
               body: JSON.stringify({ uris: trackUris })
             })
               .then(response => {
-                console.log(response)
+                // console.log(`Spotify then post playlist tracks ${response}`, response)
                 if (response.ok) {
-                  return response.json();
+                  return response.status;
                 }
                 throw new Error(`Request failed - post playlist/ tracks ${userId}`);
               });

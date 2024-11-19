@@ -30,16 +30,19 @@ function Playlist({ songsPlaylist, removeFromPlaylist, savePlaylist }) {
     }
 
     return (<>
-        <div className={styles.tracklist} id="playlist-section">
-            <input
-                className={styles.playlistName}
-                id="playlist-title"
-                onChange={handleTitle} value={title} type="text" placeholder="Add a playlist title" />
-            <Tracklist songsPlaylist={songsPlaylist} removeFromPlaylist={removeFromPlaylist} addRemoveTrack={addRemoveTrack} />
-            <button id="save-spotify-btn"
-                className={styles.Button}
-                type="button"
-                onClick={handleSubmitSavePlaylist}>Save to Spotify</button>
+        <div className={styles.playlist} id="playlist-section">
+            <div
+                id="playlistContent" >
+                <input
+                    className={styles.playlistName}
+                    id="playlist-title"
+                    onChange={handleTitle} value={title} type="text" placeholder="Add a playlist title" />
+                <Tracklist songsPlaylist={songsPlaylist} removeFromPlaylist={removeFromPlaylist} addRemoveTrack={addRemoveTrack} />
+                <button id="save-spotify-btn"
+                    className={styles.Button}
+                    type="button"
+                    onClick={handleSubmitSavePlaylist}>Save to Spotify</button>
+            </div>
         </div>
     </>)
 }

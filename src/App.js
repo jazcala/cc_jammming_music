@@ -25,6 +25,10 @@ function App() {
       // console.log("trackUris ", trackUris);
       const response = await Spotify.savePlaylist(title, trackUris);
       console.log('response save playlist', response)
+      if (response === 201) {
+        clearPlaylist()
+        addCreatedPlaylistMessage()
+      }
 
     } catch (e) {
       console.log('savePlaylist Error catched: ', e)
@@ -32,11 +36,22 @@ function App() {
   }, []);
 
   // Other functions
-  // const clearPlaylist = () => {
-  //   // setPlaylistTitle("");
-  //   console.log('In Clean Playlist')
-  //   setPlaylist([]);
-  // }
+  const clearPlaylist = () => {
+    // setPlaylistTitle("");
+
+    console.log('In Clean Playlist');
+    setPlaylist([]);
+    // TODO clean title
+  }
+
+  const addCreatedPlaylistMessage = () => {
+    const playlist = document.getElementById('playlistContent');
+    playlist.style.display = 'none';
+    const message = document.createElement('p');
+    const text = document.createTextNode('Playlist created');
+    message.appendChild(text);
+    playlist.parentElement.appendChild(message);
+  }
 
   const addPlaylist = (track) => {
     let result = playlist.find(elem => elem.id === track.id);
