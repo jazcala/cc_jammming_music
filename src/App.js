@@ -10,15 +10,17 @@ import { useState, useCallback } from 'react';
 
 function App() {
 
+  const [searchBy, setSearchBy] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [playlistName, setPlaylistName] = useState('');
   const [playlistTracks, setPlaylistTracks] = useState([]);
   const [message, setMessage] = useState("");
 
   // Spotify Calls
-  const search = useCallback((term) => {
-    Spotify.search(term).then(setSearchResults);
-  }, []);
+  const search = useCallback(() => {
+    Spotify.search(searchBy)
+      .then(setSearchResults);
+  }, [searchBy]);
 
   const savePlaylist = useCallback(async (title, trackUris) => {
 
@@ -63,7 +65,11 @@ function App() {
   return (
     <div className="app">
       <Header />
-      <SearchBar search={search} />
+      <SearchBar
+        search={search}
+        searchBy={searchBy}
+        setSearchBy={setSearchBy}
+      />
       <div className='container'>
         <SeachResults
           className="search-results"
