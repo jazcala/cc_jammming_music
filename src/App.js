@@ -46,7 +46,7 @@ function App() {
     setMessage(msg);
   }
 
-  const addPlaylist = (track) => {
+  const addToPlaylist = (track) => {
     let result = playlistTracks.find(elem => elem.id === track.id);
     if (!result) {
       setPlaylistTracks((prev) => [...prev, track]);
@@ -65,7 +65,10 @@ function App() {
       <Header />
       <SearchBar search={search} />
       <div className='container'>
-        <SeachResults className="search-results" results={searchResults} addPlaylist={addPlaylist} />
+        <SeachResults
+          className="search-results"
+          results={searchResults}
+          addToPlaylist={addToPlaylist} />
         <Playlist className="track-list"
           playlistTracks={playlistTracks}
           setPlaylistName={setPlaylistName}

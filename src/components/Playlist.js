@@ -38,7 +38,10 @@ function Playlist({ playlistTracks, removeFromPlaylist, savePlaylist, playlistNa
                 className={styles.playlistName}
                 id="playlist-title"
                 onChange={handlePlaylistName} value={playlistName} type="text" placeholder="Add a playlist title" />
-            <Tracklist playlistTracks={playlistTracks} removeFromPlaylist={removeFromPlaylist} addRemoveTrack={addRemoveTrack} />
+            <Tracklist
+                tracks={playlistTracks}
+                removeFromPlaylist={removeFromPlaylist}
+                addRemoveTrack={addRemoveTrack} />
             <button id="save-spotify-btn"
                 className={styles.Button}
                 type="button"

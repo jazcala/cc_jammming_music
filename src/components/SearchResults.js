@@ -1,19 +1,18 @@
 import React from 'react';
 import styles from './SearchResults.module.css';
-import Track from './Track';
+import Tracklist from './Tracklist';
 
-function SeachResults({ results, addPlaylist }) {
+function SeachResults({ results, addToPlaylist }) {
   const addRemoveTrack = true;
-  return (<>
+  return (
     <div className={styles.searchResults}>
       <h2>Results</h2>
-      {
-        results.map((result) => (
-          <Track key={result.id} track={result} addRemoveTrack={addRemoveTrack} addPlaylist={addPlaylist} />
-        ))
-      }
+      <Tracklist
+        tracks={results}
+        addRemoveTrack={addRemoveTrack}
+        addToPlaylist={addToPlaylist} />
     </div>
-  </>)
+  )
 }
 
 export default SeachResults;
