@@ -1,25 +1,18 @@
-.Track{
-
+.Track {
   width: 90%;
   background-color: darkmagenta;
   color: snow;
-  border-bottom: 1px solid snow ;
-
+  border-bottom: 1px solid snow;
   padding: 0.5rem 1rem;
   display: flex;
   justify-content: space-between;
   margin-top: 1rem;
-
-
 }
 
 .Track h3 {
-
   line-height: 2rem;
-
 }
+
 .Track button {
   padding: 1rem;
-
-
 }
