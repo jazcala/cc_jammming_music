@@ -25,7 +25,6 @@ function Playlist({ playlistTracks, removeFromPlaylist, savePlaylist, playlistNa
         }
         console.log('en Playlist songs ', playlistTracks);
         const arr = Array.from(playlistTracks, song => song.uri);
-        // console.log(arr);
         setTracksUri(arr);
         console.log('en playlist trackUris ', trackUris)
         savePlaylist(playlistName, arr);
@@ -37,7 +36,10 @@ function Playlist({ playlistTracks, removeFromPlaylist, savePlaylist, playlistNa
             <input
                 className={styles.playlistName}
                 id="playlist-title"
-                onChange={handlePlaylistName} value={playlistName} type="text" placeholder="Add a playlist title" />
+                onChange={handlePlaylistName}
+                value={playlistName}
+                type="text"
+                placeholder="Add a playlist title" />
             <Tracklist
                 tracks={playlistTracks}
                 removeFromPlaylist={removeFromPlaylist}

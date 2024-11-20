@@ -1,20 +1,19 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styles from './SearchBar.module.css';
 
-function SearchBar({ search }) {
-  const [searchValue, setSearchValue] = useState("");
+function SearchBar({ search, searchBy, setSearchBy }) {
 
-  const onChangeSearchValue = (e) => {
+  const onChangeSearchBy = (e) => {
     e.preventDefault();
-    setSearchValue(e.target.value);
+    setSearchBy(e.target.value);
   }
 
   const handleSearchClick = (e) => {
     e.preventDefault();
-    if (searchValue === "") {
+    if (searchBy === "") {
       return alert('Please enter a song title');
     }
-    search(searchValue);
+    search();
   }
 
   return (
@@ -23,7 +22,9 @@ function SearchBar({ search }) {
         type="text"
         name="search"
         placeholder="Enter a song title"
-        onChange={onChangeSearchValue} />
+        onChange={onChangeSearchBy}
+        value={searchBy}
+      />
       <button className={styles.searchBtn}
         type='button'
         onClick={handleSearchClick}>Search</button>
