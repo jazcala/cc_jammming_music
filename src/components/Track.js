@@ -3,12 +3,12 @@ import './Track.module.css';
 import styles from './Track.module.css';
 
 
-function Track({ track, addRemoveTrack, addPlaylist, removeFromPlaylist }) {
+function Track({ track, addRemoveTrack, addToPlaylist, removeFromPlaylist }) {
 
   const handleClick = (e) => {
     e.preventDefault();
     if (addRemoveTrack) {
-      addPlaylist(track);
+      addToPlaylist(track);
     } else {
       removeFromPlaylist(track)
     }
