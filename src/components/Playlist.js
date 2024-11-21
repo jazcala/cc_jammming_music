@@ -1,11 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './Playlist.module.css'
 import Tracklist from './Tracklist';
 import styles from './Playlist.module.css';
 
 function Playlist({ playlistTracks, removeFromPlaylist, savePlaylist, playlistName, setPlaylistName, addMessage, message }) {
-    // const [title, setTitle] = useState("");
-    const [trackUris, setTracksUri] = useState([]);
 
     const addRemoveTrack = false;
     const handlePlaylistName = (e) => {
@@ -23,11 +21,7 @@ function Playlist({ playlistTracks, removeFromPlaylist, savePlaylist, playlistNa
         if (playlistTracks.length == 0) {
             return alert('Add at least a track to the playlist');
         }
-        console.log('en Playlist songs ', playlistTracks);
-        const arr = Array.from(playlistTracks, song => song.uri);
-        setTracksUri(arr);
-        console.log('en playlist trackUris ', trackUris)
-        savePlaylist(playlistName, arr);
+        savePlaylist();
     }
 
     return (

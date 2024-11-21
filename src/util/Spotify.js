@@ -6,6 +6,7 @@ const Spotify = {
 
   async loadSpotifyLoginPage() {
     const accessUrl = `https://accounts.spotify.com/authorize?client_id=${clientId}&response_type=token&scope=playlist-modify-public&redirect_uri=${redirectUri}`;
+    // console.log(accessUrl)
     // This loads the accessUrl in the windows / so the user can add its credentials.
     window.location = accessUrl;
     // user needs to login and it's redirect to the app to redirectUri
@@ -52,6 +53,7 @@ const Spotify = {
       return;
     }
     const accessToken = await this.getAccessToken();
+    // console.log(accessToken);
 
     return await fetch(`https://api.spotify.com/v1/search?type=track&q=${term}`, {
       headers: {
@@ -59,6 +61,12 @@ const Spotify = {
       }
     })
       .then(response => {
+        // console.log('response: ', response)
+        if (response.status === 401) {
+          // console.log('unauthorized', response.status);
+          return []
+        }
+
         if (response.ok) {
           return response.json();
         }
