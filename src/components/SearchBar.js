@@ -20,14 +20,16 @@ function SearchBar({ search, searchBy, setSearchBy }) {
     <div className={styles.searchBar} >
       <input
         type="text"
-        name="search"
         placeholder="Enter a song title"
         onChange={onChangeSearchBy}
         value={searchBy}
+        data-testid="search-by-input"
       />
       <button className={styles.searchBtn}
         type='button'
-        onClick={handleSearchClick}>Search</button>
+        onClick={handleSearchClick}
+        data-testid="search-button"
+      >Search</button>
     </div>
   );
 }
