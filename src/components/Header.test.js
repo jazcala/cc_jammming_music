@@ -1,9 +1,9 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import App from './App';
+import Header from './Header';
 
 test('renders Jamming Title', () => {
-  render(<App />);
+  render(<Header />);
   const headerText = screen.getByText(/Jamming/i);
   expect(headerText).toBeInTheDocument();
 });
