@@ -28,6 +28,7 @@ function Playlist({ playlistTracks, removeFromPlaylist, savePlaylist, playlistNa
         <div className={styles.playlist} id="playlist-section">
             <p id='message'>{message}</p>
             <input
+                aria-label="playlist-title"
                 className={styles.playlistName}
                 id="playlist-title"
                 onChange={handlePlaylistName}
