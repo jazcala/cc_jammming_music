@@ -1,12 +1,11 @@
 const clientId = process.env.REACT_APP_SPOTIFY_CLIENT_ID; // Insert client ID here.
-const redirectUri = 'http://localhost:3003/callback'; // Have to add this to your accepted Spotify redirect URIs on the Spotify API.
+const redirectUri = process.env.REDIRECT_URI; // Have to add this to your accepted Spotify redirect URIs on the Spotify API.
 let accessToken;
 
 const Spotify = {
 
   loadSpotifyLoginPage() {
     const accessUrl = `https://accounts.spotify.com/authorize?client_id=${clientId}&response_type=token&scope=playlist-modify-public&redirect_uri=${redirectUri}`;
-    // console.log(accessUrl)
     // This loads the accessUrl in the windows / so the user can add its credentials.
     window.location = accessUrl;
     // user needs to login and it's redirect to the app to redirectUri
