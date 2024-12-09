@@ -1,5 +1,5 @@
 const clientId = process.env.REACT_APP_SPOTIFY_CLIENT_ID; // Insert client ID here.
-const redirectUri = process.env.REDIRECT_URI; // Have to add this to your accepted Spotify redirect URIs on the Spotify API.
+const redirectUri = process.env.REACT_APP_REDIRECT_URI; // Have to add this to your accepted Spotify redirect URIs on the Spotify API.
 let accessToken;
 
 const Spotify = {
