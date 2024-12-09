@@ -52,6 +52,8 @@ function App() {
     let result = playlistTracks.find(elem => elem.id === track.id);
     if (!result) {
       setPlaylistTracks((prev) => [...prev, track]);
+      setSearchResults((prev) => prev.filter(elem => elem.id !== track.id))
+
     } else {
       alert('This song is in the playlist.')
     }
